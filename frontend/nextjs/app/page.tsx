@@ -45,6 +45,15 @@ export default function Home() {
       mcp_enabled: false,
       mcp_configs: [],
       mcp_strategy: "fast",
+      academic_mode: false,
+      academic_config: {
+        sources: ["arxiv", "semantic_scholar", "openalex", "core"],
+        year_from: null,
+        year_to: null,
+        oa_only: true,
+        max_papers: 12,
+        summarize_long_paper: true,
+      },
     };
 
     // Try to load all settings from localStorage

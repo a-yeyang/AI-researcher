@@ -26,6 +26,10 @@ def get_retriever(retriever: str):
         - tavily: Tavily search API
         - exa: Exa search
         - semantic_scholar: Semantic Scholar academic search
+        - openalex: OpenAlex academic metadata search
+        - core: CORE open-access paper search
+        - crossref: Crossref metadata search
+        - unpaywall: Unpaywall DOI-to-OA resolver
         - pubmed_central: PubMed Central medical literature
         - custom: Custom user-defined retriever
         - mcp: Model Context Protocol retriever
@@ -79,6 +83,22 @@ def get_retriever(retriever: str):
             from gpt_researcher.retrievers import SemanticScholarSearch
 
             return SemanticScholarSearch
+        case "openalex":
+            from gpt_researcher.retrievers import OpenAlexSearch
+
+            return OpenAlexSearch
+        case "core":
+            from gpt_researcher.retrievers import CoreSearch
+
+            return CoreSearch
+        case "crossref":
+            from gpt_researcher.retrievers import CrossrefSearch
+
+            return CrossrefSearch
+        case "unpaywall":
+            from gpt_researcher.retrievers import UnpaywallResolver
+
+            return UnpaywallResolver
         case "pubmed_central":
             from gpt_researcher.retrievers import PubMedCentralSearch
 

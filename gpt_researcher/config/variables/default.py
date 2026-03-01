@@ -51,4 +51,16 @@ DEFAULT_CONFIG: BaseConfig = {
     "IMAGE_GENERATION_MAX_IMAGES": 3,  # Maximum number of images to generate per report
     "IMAGE_GENERATION_ENABLED": False,  # Master switch for inline image generation
     "IMAGE_GENERATION_STYLE": "dark",  # Image style: "dark" (matches app theme), "light", or "auto"
+    # Academic research mode settings
+    "ACADEMIC_MODE": False,
+    "ACADEMIC_CONFIG": {
+        "sources": ["arxiv", "semantic_scholar", "openalex", "core"],
+        "year_from": None,
+        "year_to": None,
+        "oa_only": True,
+        "max_papers": 12,
+        "summarize_long_paper": True,
+        "max_summary_papers": 3,
+        "cache_ttl_seconds": 604800,
+    },
 }

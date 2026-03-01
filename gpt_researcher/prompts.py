@@ -548,6 +548,76 @@ Instructions:
 """
 
     @staticmethod
+    def generate_paper_chunk_summary_prompt(
+        query: str,
+        chunk_text: str,
+        chunk_index: int,
+        total_chunks: int,
+        source_title: str,
+    ) -> str:
+        return f"""
+You are analyzing chunk {chunk_index}/{total_chunks} of a scientific paper.
+Paper title: "{source_title}"
+User research query: "{query}"
+
+Task:
+1. Extract key facts from this chunk.
+2. Identify method details, experiments, metrics, and limitations if present.
+3. Keep it concise, factual, and traceable to this chunk only.
+4. Output markdown bullets only.
+
+Chunk:
+\"\"\"{chunk_text}\"\"\"
+"""
+
+    @staticmethod
+    def generate_paper_global_summary_prompt(
+        query: str,
+        source_title: str,
+        chunk_summaries: list[str],
+    ) -> str:
+        return f"""
+You are given chunk-level summaries from a scientific paper.
+Paper title: "{source_title}"
+User research query: "{query}"
+
+Produce a single global paper summary that includes:
+- Problem statement
+- Core method
+- Experimental setup and metrics
+- Main findings
+- Limitations
+- Reproducibility notes
+
+Keep it structured in markdown with short sections.
+
+Chunk summaries:
+{chr(10).join(chunk_summaries)}
+"""
+
+    @staticmethod
+    def generate_paper_query_focused_summary_prompt(
+        query: str,
+        source_title: str,
+        global_summary_input: str,
+    ) -> str:
+        return f"""
+Given the paper analysis below, write a query-focused summary tailored to:
+"{query}"
+
+Paper title: "{source_title}"
+
+Output format:
+1. Why this paper matters for the query
+2. Directly relevant findings
+3. Caveats for applying results
+4. One short actionable takeaway
+
+Paper analysis:
+{global_summary_input}
+"""
+
+    @staticmethod
     def pretty_print_docs(docs: list[Document], top_n: int | None = None) -> str:
         """Compress the list of documents into a context string"""
         return f"\n".join(f"Source: {d.metadata.get('source')}\n"

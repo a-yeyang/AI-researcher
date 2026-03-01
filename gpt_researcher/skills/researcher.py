@@ -147,8 +147,15 @@ class ResearchConductor:
                 additional_research = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
                 research_data += ' '.join(additional_research)
         elif self.researcher.report_source == ReportSource.Web.value:
-            self.logger.info("Using web search with all configured retrievers")
-            research_data = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
+            if self.researcher.academic_mode:
+                self.logger.info("Using academic pipeline for web research")
+                research_data = await self._get_context_by_academic_pipeline(self.researcher.query)
+                if not research_data:
+                    self.logger.info("Academic pipeline returned no context; falling back to web search")
+                    research_data = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
+            else:
+                self.logger.info("Using web search with all configured retrievers")
+                research_data = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
         elif self.researcher.report_source == ReportSource.Local.value:
             self.logger.info("Using local search")
             document_data = await DocumentLoader(self.researcher.cfg.doc_path).load()
@@ -166,7 +173,12 @@ class ResearchConductor:
             if self.researcher.vector_store:
                 self.researcher.vector_store.load(document_data)
             docs_context = await self._get_context_by_web_search(self.researcher.query, document_data, self.researcher.query_domains)
-            web_context = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
+            if self.researcher.academic_mode:
+                web_context = await self._get_context_by_academic_pipeline(self.researcher.query)
+                if not web_context:
+                    web_context = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
+            else:
+                web_context = await self._get_context_by_web_search(self.researcher.query, [], self.researcher.query_domains)
             research_data = self.researcher.prompt_family.join_local_web_documents(docs_context, web_context)
         elif self.researcher.report_source == ReportSource.Azure.value:
             from ..document.azure_document_loader import AzureDocumentLoader
@@ -209,6 +221,32 @@ class ResearchConductor:
 
         self.logger.info(f"Research completed. Context size: {len(str(self.researcher.context))}")
         return self.researcher.context
+
+    async def _get_context_by_academic_pipeline(self, query: str) -> str:
+        """Run academic OA pipeline and merge results into research state."""
+        from ..papers import AcademicResearchPipeline
+
+        pipeline = AcademicResearchPipeline(self.researcher)
+        result = await pipeline.run(query)
+
+        for paper in result.papers:
+            source_url = paper.oa_pdf_url or paper.url
+            if source_url:
+                self.researcher.visited_urls.add(source_url)
+
+        if result.papers:
+            sources_payload = []
+            for paper in result.papers:
+                sources_payload.append(
+                    {
+                        "title": paper.title,
+                        "url": paper.oa_pdf_url or paper.url,
+                        "raw_content": paper.abstract,
+                    }
+                )
+            self.researcher.add_research_sources(sources_payload)
+
+        return result.context
 
     async def _get_context_by_urls(self, urls):
         """Scrapes and compresses the context from the given urls"""

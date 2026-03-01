@@ -21,6 +21,8 @@ class BasicReport:
         headers=None,
         mcp_configs=None,
         mcp_strategy=None,
+        academic_mode: bool = False,
+        academic_config: dict | None = None,
     ):
         self.query = query
         self.query_domains = query_domains
@@ -55,6 +57,9 @@ class BasicReport:
             gpt_researcher_params["mcp_configs"] = mcp_configs
         if mcp_strategy is not None:
             gpt_researcher_params["mcp_strategy"] = mcp_strategy
+        gpt_researcher_params["academic_mode"] = academic_mode
+        if academic_config is not None:
+            gpt_researcher_params["academic_config"] = academic_config
 
         self.gpt_researcher = GPTResearcher(**gpt_researcher_params)
 

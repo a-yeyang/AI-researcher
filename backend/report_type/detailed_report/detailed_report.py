@@ -24,6 +24,8 @@ class DetailedReport:
         complement_source_urls: bool = False,
         mcp_configs=None,
         mcp_strategy=None,
+        academic_mode: bool = False,
+        academic_config: dict | None = None,
     ):
         self.query = query
         self.report_type = report_type
@@ -37,6 +39,8 @@ class DetailedReport:
         self.subtopics = subtopics
         self.headers = headers or {}
         self.complement_source_urls = complement_source_urls
+        self.academic_mode = academic_mode
+        self.academic_config = academic_config or {}
         
         # Generate a unique research ID for this report
         self.research_id = self._generate_research_id(query)
@@ -61,6 +65,8 @@ class DetailedReport:
             gpt_researcher_params["mcp_configs"] = mcp_configs
         if mcp_strategy is not None:
             gpt_researcher_params["mcp_strategy"] = mcp_strategy
+        gpt_researcher_params["academic_mode"] = self.academic_mode
+        gpt_researcher_params["academic_config"] = self.academic_config
 
         self.gpt_researcher = GPTResearcher(**gpt_researcher_params)
         self.existing_headers: List[Dict] = []
@@ -132,7 +138,9 @@ class DetailedReport:
             source_urls=self.source_urls,
             # Propagate MCP configuration so follow-up researchers can use MCP
             mcp_configs=self.gpt_researcher.mcp_configs,
-            mcp_strategy=self.gpt_researcher.mcp_strategy
+            mcp_strategy=self.gpt_researcher.mcp_strategy,
+            academic_mode=self.academic_mode,
+            academic_config=self.academic_config,
         )
 
         subtopic_assistant.context = list(set(self.global_context))

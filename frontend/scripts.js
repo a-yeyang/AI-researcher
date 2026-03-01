@@ -62,6 +62,7 @@ const GPTResearcher = (() => {
 
     // Initialize MCP functionality
     initMCPSection();
+    initAcademicSection();
 
     // The download bar is now fixed in place with CSS
     // No need to set display property here
@@ -985,6 +986,12 @@ const GPTResearcher = (() => {
         tone: tone,
         agent: agent,
         query_domains: query_domains,
+      }
+
+      // Add academic mode configuration if enabled
+      const academicData = collectAcademicData();
+      if (academicData) {
+        Object.assign(requestData, academicData);
       }
 
       // Add MCP configuration if enabled
@@ -2080,6 +2087,48 @@ const GPTResearcher = (() => {
   }
 
   // MCP Configuration Management
+  
+  const initAcademicSection = () => {
+    const academicModeEnabled = document.getElementById('academicModeEnabled');
+    const academicConfigSection = document.getElementById('academicConfigSection');
+    if (!academicModeEnabled || !academicConfigSection) {
+      return;
+    }
+    academicModeEnabled.addEventListener('change', () => {
+      academicConfigSection.style.display = academicModeEnabled.checked ? 'block' : 'none';
+    });
+  };
+
+  const collectAcademicData = () => {
+    const enabled = document.getElementById('academicModeEnabled');
+    if (!enabled || !enabled.checked) {
+      return null;
+    }
+
+    const sourcesInput = document.getElementById('academicSources');
+    const yearFromInput = document.getElementById('academicYearFrom');
+    const yearToInput = document.getElementById('academicYearTo');
+    const maxPapersInput = document.getElementById('academicMaxPapers');
+    const oaOnlyInput = document.getElementById('academicOAOnly');
+    const summarizeInput = document.getElementById('academicSummarizeLongPaper');
+
+    const sources = (sourcesInput?.value || "arxiv,semantic_scholar,openalex,core")
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean);
+
+    return {
+      academic_mode: true,
+      academic_config: {
+        sources: sources,
+        year_from: yearFromInput?.value ? parseInt(yearFromInput.value, 10) : null,
+        year_to: yearToInput?.value ? parseInt(yearToInput.value, 10) : null,
+        oa_only: oaOnlyInput ? !!oaOnlyInput.checked : true,
+        max_papers: maxPapersInput?.value ? parseInt(maxPapersInput.value, 10) : 12,
+        summarize_long_paper: summarizeInput ? !!summarizeInput.checked : true
+      }
+    };
+  };
   
   // Initialize MCP functionality
   const initMCPSection = () => {

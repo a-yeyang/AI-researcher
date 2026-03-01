@@ -38,6 +38,15 @@ export interface MCPConfig {
   env: Record<string, string>;
 }
 
+export interface AcademicConfig {
+  sources: string[];
+  year_from?: number | null;
+  year_to?: number | null;
+  oa_only: boolean;
+  max_papers: number;
+  summarize_long_paper: boolean;
+}
+
 export interface ChatBoxSettings {
   report_type: string;
   report_source: string;
@@ -48,6 +57,8 @@ export interface ChatBoxSettings {
   mcp_enabled: boolean;
   mcp_configs: MCPConfig[];
   mcp_strategy?: string;
+  academic_mode: boolean;
+  academic_config: AcademicConfig;
 }
 
 export interface Domain {

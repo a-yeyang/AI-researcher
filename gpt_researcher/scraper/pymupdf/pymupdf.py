@@ -57,10 +57,32 @@ class PyMuPDFScraper:
                 loader = PyMuPDFLoader(self.link)
                 doc = loader.load()
 
-            # Extract the content, image (if any), and title from the document.
+            # Extract all pages with a conservative cap to avoid context explosion.
             image = []
-            # Retrieve the content of the first page to minimize embedding costs.
-            return doc[0].page_content, image, doc[0].metadata["title"]
+            max_chars = int(os.getenv("PDF_FULLTEXT_MAX_CHARS", "120000"))
+            page_texts = []
+            total_chars = 0
+
+            for page_index, page in enumerate(doc, start=1):
+                content = (page.page_content or "").strip()
+                if not content:
+                    continue
+                block = f"[Page {page_index}]\n{content}"
+                page_texts.append(block)
+                total_chars += len(block)
+                if total_chars >= max_chars:
+                    break
+
+            full_content = "\n\n".join(page_texts).strip()
+            if not full_content:
+                return "", image, ""
+
+            title = ""
+            for page in doc:
+                title = page.metadata.get("title", "") if page.metadata else ""
+                if title:
+                    break
+            return full_content, image, title
 
         except requests.exceptions.Timeout:
             print(f"Download timed out. Please check the link : {self.link}")

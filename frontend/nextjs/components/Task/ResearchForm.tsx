@@ -90,6 +90,38 @@ export default function ResearchForm({
     }));
   };
 
+  const onAcademicModeToggle = (enabled: boolean) => {
+    setChatBoxSettings((prevSettings: any) => ({
+      ...prevSettings,
+      academic_mode: enabled,
+      academic_config: prevSettings.academic_config || {
+        sources: ["arxiv", "semantic_scholar", "openalex", "core"],
+        year_from: null,
+        year_to: null,
+        oa_only: true,
+        max_papers: 12,
+        summarize_long_paper: true,
+      },
+    }));
+  };
+
+  const updateAcademicConfig = (patch: Record<string, any>) => {
+    setChatBoxSettings((prevSettings: any) => ({
+      ...prevSettings,
+      academic_config: {
+        ...(prevSettings.academic_config || {
+          sources: ["arxiv", "semantic_scholar", "openalex", "core"],
+          year_from: null,
+          year_to: null,
+          oa_only: true,
+          max_papers: 12,
+          summarize_long_paper: true,
+        }),
+        ...patch,
+      },
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (onFormSubmit) {
@@ -160,6 +192,79 @@ export default function ResearchForm({
         mcpConfigs={chatBoxSettings.mcp_configs || []}
         onMCPChange={onMCPChange}
       />
+
+      <div className="form-group academic-mode-group">
+        <label className="agent_question">
+          <input
+            type="checkbox"
+            checked={chatBoxSettings.academic_mode || false}
+            onChange={(e) => onAcademicModeToggle(e.target.checked)}
+            style={{ marginRight: 8 }}
+          />
+          Academic Research Mode (Communications)
+        </label>
+        {chatBoxSettings.academic_mode && (
+          <div className="academic-config-grid" style={{ marginTop: 8 }}>
+            <label htmlFor="academic_sources">Academic Sources</label>
+            <input
+              id="academic_sources"
+              className="form-control-static"
+              value={(chatBoxSettings.academic_config?.sources || []).join(",")}
+              onChange={(e) => {
+                const sources = e.target.value
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean);
+                updateAcademicConfig({ sources });
+              }}
+            />
+            <label htmlFor="academic_year_from">Year From</label>
+            <input
+              id="academic_year_from"
+              type="number"
+              className="form-control-static"
+              value={chatBoxSettings.academic_config?.year_from ?? ""}
+              onChange={(e) => updateAcademicConfig({ year_from: e.target.value ? Number(e.target.value) : null })}
+            />
+            <label htmlFor="academic_year_to">Year To</label>
+            <input
+              id="academic_year_to"
+              type="number"
+              className="form-control-static"
+              value={chatBoxSettings.academic_config?.year_to ?? ""}
+              onChange={(e) => updateAcademicConfig({ year_to: e.target.value ? Number(e.target.value) : null })}
+            />
+            <label htmlFor="academic_max_papers">Max Papers</label>
+            <input
+              id="academic_max_papers"
+              type="number"
+              min={1}
+              max={50}
+              className="form-control-static"
+              value={chatBoxSettings.academic_config?.max_papers ?? 12}
+              onChange={(e) => updateAcademicConfig({ max_papers: Number(e.target.value || 12) })}
+            />
+            <label className="agent_question">
+              <input
+                type="checkbox"
+                checked={chatBoxSettings.academic_config?.oa_only ?? true}
+                onChange={(e) => updateAcademicConfig({ oa_only: e.target.checked })}
+                style={{ marginRight: 8 }}
+              />
+              OA only
+            </label>
+            <label className="agent_question">
+              <input
+                type="checkbox"
+                checked={chatBoxSettings.academic_config?.summarize_long_paper ?? true}
+                onChange={(e) => updateAcademicConfig({ summarize_long_paper: e.target.checked })}
+                style={{ marginRight: 8 }}
+              />
+              Summarize long papers
+            </label>
+          </div>
+        )}
+      </div>
       
       <LayoutSelector layoutType={layoutType || 'copilot'} onLayoutChange={onLayoutChange} />
 

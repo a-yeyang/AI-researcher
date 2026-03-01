@@ -224,6 +224,36 @@
                 <small class="text-muted">Example: techcrunch.com, forbes.com</small>
             </div>
 
+            <div class="form-group">
+                <div class="mcp-section">
+                    <div class="mcp-header">
+                        <label for="academicModeEnabled" class="form-label">
+                            <input type="checkbox" id="academicModeEnabled" name="academic_mode" class="mcp-toggle">
+                            Enable Academic Research Mode (Communications)
+                        </label>
+                    </div>
+                    <small class="text-muted">Use OA-focused scholarly sources and long-paper summarization.</small>
+                    <div id="academicConfigSection" class="mcp-config-section" style="display: none;">
+                        <div class="mcp-config-group">
+                            <label for="academicSources" class="form-label">Sources (comma-separated)</label>
+                            <input type="text" id="academicSources" class="form-control" value="arxiv,semantic_scholar,openalex,core" />
+                            <label for="academicYearFrom" class="form-label mt-2">Year From</label>
+                            <input type="number" id="academicYearFrom" class="form-control" placeholder="e.g. 2021" />
+                            <label for="academicYearTo" class="form-label mt-2">Year To</label>
+                            <input type="number" id="academicYearTo" class="form-control" placeholder="e.g. 2026" />
+                            <label for="academicMaxPapers" class="form-label mt-2">Max Papers</label>
+                            <input type="number" id="academicMaxPapers" class="form-control" value="12" min="1" max="50" />
+                            <div class="mt-2">
+                                <label><input type="checkbox" id="academicOAOnly" checked> OA only</label>
+                            </div>
+                            <div class="mt-1">
+                                <label><input type="checkbox" id="academicSummarizeLongPaper" checked> Summarize long papers</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- MCP Configuration Section -->
             <div class="form-group">
                 <div class="mcp-section">

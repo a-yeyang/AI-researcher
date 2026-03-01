@@ -78,6 +78,8 @@ class GPTResearcher:
         mcp_configs: list[dict] | None = None,
         mcp_max_iterations: int | None = None,
         mcp_strategy: str | None = None,
+        academic_mode: bool | None = None,
+        academic_config: dict | None = None,
         **kwargs
     ):
         """
@@ -132,6 +134,9 @@ class GPTResearcher:
                 - "fast" (default): Run MCP once with original query for best performance
                 - "deep": Run MCP for all sub-queries for maximum thoroughness  
                 - "disabled": Skip MCP entirely, use only web retrievers
+            academic_mode (bool, optional): Enable OA-focused academic paper pipeline.
+            academic_config (dict, optional): Academic pipeline settings including sources,
+                year filters, OA constraints, and long-paper summarization controls.
         """
         self.kwargs = kwargs
         self.query = query
@@ -163,6 +168,8 @@ class GPTResearcher:
         self.research_costs = 0.0
         self.log_handler = log_handler
         self.prompt_family = get_prompt_family(prompt_family or self.cfg.prompt_family, self.cfg)
+        self.academic_mode = bool(academic_mode if academic_mode is not None else getattr(self.cfg, "academic_mode", False))
+        self.academic_config = academic_config or getattr(self.cfg, "academic_config", {})
         
         # Process MCP configurations if provided
         self.mcp_configs = mcp_configs
@@ -341,7 +348,8 @@ class GPTResearcher:
             "query": self.query,
             "report_type": self.report_type,
             "agent": self.agent,
-            "role": self.role
+            "role": self.role,
+            "academic_mode": self.academic_mode,
         })
 
         # Handle deep research separately
