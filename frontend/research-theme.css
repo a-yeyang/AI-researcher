@@ -1,0 +1,660 @@
+/**
+ * 科研智能助手 — 学术风格主题
+ * 清爽、严肃的论文/科研网站风格，全局 Arial 字体
+ */
+
+/* ========== 全局字体与基础 ========== */
+html, body,
+.landing, .container, .margin-div,
+input, select, textarea, button, .btn,
+label, .agent-question, .form-control,
+#output, #reportContainer, #task,
+h1, h2, h3, h4, p, span, a, small,
+footer, .credits-bar, .history-panel, .websocket-panel,
+.feature-card, .feature-title, .feature-text,
+.chat-message, .chat-input, .chat-timestamp,
+.report-action-btn, .download-option-btn,
+.history-entry-title, .history-entry-timestamp,
+.status-label, .status-value, .mcp-info-content {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+#reportContainer {
+  font-family: Arial, Helvetica, sans-serif !important;
+}
+
+/* ========== 页面背景 — 浅色纸质感 ========== */
+html, body {
+  background: #f0f2f5 !important;
+  background-image: none !important;
+  animation: none !important;
+  color: #2d3748 !important;
+}
+
+body::before {
+  display: none !important;
+}
+
+/* ========== 首屏 Landing（极简：仅一行标题） ========== */
+.landing {
+  background: linear-gradient(180deg, #ffffff 0%, #f0f2f5 100%) !important;
+  color: #2d3748 !important;
+}
+
+/* 极简首屏：不占满屏，标题一行后即正文 */
+.landing-minimal {
+  min-height: auto !important;
+  height: auto !important;
+  padding: 24px 20px 16px !important;
+  margin-top: 0 !important;
+  display: block !important;
+}
+
+.landing-minimal .page-title {
+  margin: 0 !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  color: #1a202c !important;
+  text-align: center !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* 标题与下方表单的间距 */
+.landing-minimal + .container {
+  margin-top: 12px !important;
+}
+
+.landing h1 {
+  color: #1a202c !important;
+  font-weight: 700 !important;
+}
+
+.landing h1 span,
+.gradient-text {
+  background: none !important;
+  -webkit-text-fill-color: #2c5282 !important;
+  color: #2c5282 !important;
+}
+
+.landing p {
+  color: #4a5568 !important;
+}
+
+.landing .btn-primary {
+  background: #2c5282 !important;
+  color: #fff !important;
+  border: 1px solid #2b6cb0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+}
+
+.landing .btn-primary:hover {
+  background: #2b6cb0 !important;
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12) !important;
+}
+
+/* ========== 主容器 — 白底卡片 ========== */
+.container {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+.container:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+}
+
+/* ========== 表单控件 — 方正、严肃 ========== */
+input, select, textarea, .form-control,
+#task, #output {
+  background: #ffffff !important;
+  color: #2d3748 !important;
+  border: 1px solid #cbd5e0 !important;
+  border-radius: 2px !important;
+}
+
+input:hover, input:focus, select:hover, select:focus,
+.form-control:hover, .form-control:focus,
+#task:focus {
+  background: #ffffff !important;
+  border-color: #2c5282 !important;
+  box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.15) !important;
+}
+
+/* ========== 按钮 — 矩形、学术色 ========== */
+.btn-primary {
+  background: #2c5282 !important;
+  border: 1px solid #2b6cb0 !important;
+  border-radius: 2px !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.btn-primary:hover {
+  background: #2b6cb0 !important;
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.btn-secondary {
+  background: #718096 !important;
+  border: 1px solid #4a5568 !important;
+  border-radius: 2px !important;
+  color: #fff !important;
+}
+
+.btn-secondary:hover {
+  background: #4a5568 !important;
+  transform: none !important;
+}
+
+.btn-action {
+  background: #f7fafc !important;
+  border: 1px solid #cbd5e0 !important;
+  color: #2d3748 !important;
+  border-radius: 2px !important;
+}
+
+.btn:hover {
+  transform: none !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+/* 提交按钮 */
+#researchForm input[type="submit"] {
+  background: #2c5282 !important;
+  border: 1px solid #2b6cb0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+}
+
+#researchForm input[type="submit"]:hover {
+  background: #2b6cb0 !important;
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12) !important;
+}
+
+/* ========== 区块与标题 ========== */
+.margin-div {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+.research-output-container h2,
+.report-container h2 {
+  color: #1a202c !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.research-output-container h2::before,
+.report-container h2::before {
+  color: #2c5282 !important;
+}
+
+/* ========== 研究进度输出区 ========== */
+#output {
+  background: #f7fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #2d3748 !important;
+  border-radius: 2px !important;
+}
+
+.agent_response {
+  background: #edf2f7 !important;
+  color: #2d3748 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+/* ========== 报告容器 ========== */
+#reportContainer {
+  background: #ffffff !important;
+  color: #2d3748 !important;
+  border: none !important;
+}
+
+#reportContainer h1, #reportContainer h2, #reportContainer h3 {
+  color: #1a202c !important;
+}
+
+#reportContainer a {
+  color: #2c5282 !important;
+}
+
+#reportContainer blockquote {
+  border-left: 3px solid #2c5282 !important;
+  color: #4a5568 !important;
+}
+
+/* ========== 标签与自定义来源 ========== */
+.tags-input {
+  border: 1px solid #cbd5e0 !important;
+  background: #fff !important;
+  border-radius: 2px !important;
+}
+
+.tag {
+  background: #2c5282 !important;
+  color: #fff !important;
+  border-radius: 2px !important;
+}
+
+/* ========== 顶部导航按钮 ========== */
+.top-history-button,
+.top-websocket-button {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e0 !important;
+  color: #2c5282 !important;
+  border-radius: 2px !important;
+}
+
+.top-history-button:hover,
+.top-websocket-button:hover {
+  background: #edf2f7 !important;
+  border-color: #2c5282 !important;
+  transform: none !important;
+}
+
+/* ========== 历史面板 ========== */
+.history-panel {
+  background: #ffffff !important;
+  border-left: 1px solid #e2e8f0 !important;
+  box-shadow: -4px 0 12px rgba(0,0,0,0.06) !important;
+}
+
+.history-panel-header {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.history-panel-header h3 {
+  color: #1a202c !important;
+}
+
+.history-panel-header h3 i {
+  color: #2c5282 !important;
+}
+
+.history-panel-search input,
+.history-panel-filters select {
+  background: #f7fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #2d3748 !important;
+  border-radius: 2px !important;
+}
+
+.history-entry {
+  background: #f7fafc !important;
+  border-left: 3px solid #2c5282 !important;
+  border-radius: 2px !important;
+  color: #2d3748 !important;
+}
+
+.history-entry:hover {
+  background: #edf2f7 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+.history-entry-title {
+  color: #1a202c !important;
+}
+
+.history-entry-timestamp {
+  color: #718096 !important;
+}
+
+.history-entry-action {
+  background: #fff !important;
+  border: 1px solid #cbd5e0 !important;
+  color: #2d3748 !important;
+  border-radius: 2px !important;
+}
+
+.history-entry-action:hover {
+  background: #edf2f7 !important;
+  border-color: #2c5282 !important;
+  color: #2c5282 !important;
+}
+
+.history-action-btn {
+  background: #f7fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #4a5568 !important;
+  border-radius: 2px !important;
+}
+
+.history-action-btn:hover {
+  background: #edf2f7 !important;
+  border-color: #2c5282 !important;
+  color: #2c5282 !important;
+}
+
+/* ========== WebSocket 状态面板 ========== */
+.websocket-panel {
+  background: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+  box-shadow: 4px 0 12px rgba(0,0,0,0.06) !important;
+}
+
+.websocket-panel-header {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.websocket-panel-header h3 {
+  color: #1a202c !important;
+}
+
+.websocket-panel-header h3 i {
+  color: #2c5282 !important;
+}
+
+.status-label {
+  color: #718096 !important;
+}
+
+.status-value {
+  color: #2d3748 !important;
+}
+
+.status-divider {
+  background: #e2e8f0 !important;
+}
+
+.websocket-action-btn {
+  color: #4a5568 !important;
+}
+
+.websocket-action-btn:hover {
+  background: #edf2f7 !important;
+  color: #2c5282 !important;
+}
+
+/* ========== 下载栏 ========== */
+.sticky-downloads-bar.credits-bar,
+.credits-bar {
+  background: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.04) !important;
+}
+
+.credits-bar p {
+  color: #4a5568 !important;
+}
+
+.credits-bar a {
+  color: #2c5282 !important;
+}
+
+.download-option-btn {
+  background: #f7fafc !important;
+  border: 1px solid #cbd5e0 !important;
+  color: #2c5282 !important;
+  border-radius: 2px !important;
+}
+
+.download-option-btn:hover {
+  background: #edf2f7 !important;
+  border-color: #2c5282 !important;
+  color: #1a202c !important;
+  transform: none !important;
+}
+
+/* ========== 报告操作按钮 ========== */
+.report-actions {
+  background: #f7fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+.report-action-btn {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e0 !important;
+  color: #2c5282 !important;
+  border-radius: 2px !important;
+}
+
+.report-action-btn:hover {
+  background: #edf2f7 !important;
+  border-color: #2c5282 !important;
+  color: #1a202c !important;
+  transform: none !important;
+}
+
+.report-action-btn i {
+  color: #2c5282 !important;
+}
+
+/* ========== 聊天区域 ========== */
+.chat-container {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+.chat-messages {
+  background: #f7fafc !important;
+  border-radius: 2px !important;
+}
+
+.user-message {
+  background: #2c5282 !important;
+  color: #fff !important;
+  border-radius: 2px !important;
+}
+
+.ai-message {
+  background: #edf2f7 !important;
+  color: #2d3748 !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+.chat-input {
+  background: #fff !important;
+  border: 1px solid #cbd5e0 !important;
+  color: #2d3748 !important;
+  border-radius: 2px !important;
+}
+
+.chat-input::placeholder {
+  color: #a0aec0 !important;
+}
+
+.chat-input:focus {
+  border-color: #2c5282 !important;
+  box-shadow: 0 0 0 2px rgba(44, 82, 130, 0.15) !important;
+  background: #fff !important;
+}
+
+.chat-timestamp {
+  color: #718096 !important;
+}
+
+#sendChatBtn {
+  background: #2c5282 !important;
+  border: 1px solid #2b6cb0 !important;
+  color: #fff !important;
+  border-radius: 2px !important;
+}
+
+/* ========== 侧边功能卡片 ========== */
+.feature-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+.feature-card:hover {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08) !important;
+  border-color: #cbd5e0 !important;
+}
+
+.feature-card.primary,
+.feature-card.info {
+  border-left-color: #2c5282 !important;
+}
+
+.feature-title {
+  color: #1a202c !important;
+}
+
+.feature-text {
+  color: #4a5568 !important;
+}
+
+.feature-icon {
+  border-radius: 2px !important;
+}
+
+.feature-card.primary .feature-icon,
+.feature-card.info .feature-icon {
+  background: #2c5282 !important;
+}
+
+/* ========== 页脚 ========== */
+footer {
+  background: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+  color: #4a5568 !important;
+}
+
+footer p {
+  color: #4a5568 !important;
+}
+
+footer a {
+  color: #2c5282 !important;
+}
+
+/* ========== 扩展视图 ========== */
+.expanded-view {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+/* ========== 图标按钮与展开按钮 ========== */
+.expand-button, .icon-button {
+  color: #2c5282 !important;
+}
+
+.expand-button:hover, .icon-button:hover {
+  background: #edf2f7 !important;
+  color: #1a202c !important;
+}
+
+/* ========== Spinner ========== */
+.modern-spinner {
+  border-color: rgba(44, 82, 130, 0.3) !important;
+  border-top-color: #2c5282 !important;
+}
+
+/* ========== Toast ========== */
+.toast-notification {
+  background: #2d3748 !important;
+  color: #fff !important;
+  border-left: 3px solid #2c5282 !important;
+  border-radius: 2px !important;
+}
+
+/* ========== MCP 区块 ========== */
+.mcp-config-section {
+  background: #f7fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+.mcp-config-textarea {
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace !important;
+  background: #fff !important;
+  border: 1px solid #cbd5e0 !important;
+  border-radius: 2px !important;
+}
+
+.mcp-info-modal .mcp-info-content {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 2px !important;
+}
+
+.mcp-info-content h3 {
+  color: #1a202c !important;
+  border-bottom-color: #2c5282 !important;
+}
+
+.mcp-info-content .highlight {
+  color: #2c5282 !important;
+}
+
+.preset-btn {
+  border: 1px solid #cbd5e0 !important;
+  color: #2d3748 !important;
+  background: #fff !important;
+  border-radius: 2px !important;
+}
+
+.preset-btn:hover {
+  border-color: #2c5282 !important;
+  color: #2c5282 !important;
+  background: #f7fafc !important;
+}
+
+/* 历史面板浮动关闭按钮 */
+.history-panel-toggle {
+  background: #2c5282 !important;
+  border: 1px solid #2b6cb0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.history-panel-toggle:hover {
+  background: #2b6cb0 !important;
+  transform: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.12) !important;
+}
+
+/* ========== 头像/Logo 框 ========== */
+.avatar {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 4px !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
+}
+
+/* ========== 滚动条（保持低调） ========== */
+#output::-webkit-scrollbar-thumb,
+.history-panel-entries::-webkit-scrollbar-thumb,
+.chat-messages::-webkit-scrollbar-thumb {
+  background-color: #cbd5e0 !important;
+  border-radius: 2px !important;
+}
+
+#output::-webkit-scrollbar-track,
+.history-panel-entries::-webkit-scrollbar-track,
+.chat-messages::-webkit-scrollbar-track {
+  background: #edf2f7 !important;
+}
+
+/* ========== 图片弹窗关闭按钮 ========== */
+.image-dialog .close-btn {
+  background: #2c5282 !important;
+  border: 1px solid #2b6cb0 !important;
+  border-radius: 2px !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08) !important;
+}
+
+.image-dialog .close-btn:hover {
+  background: #2b6cb0 !important;
+  transform: none !important;
+}
+
+/* ========== 表单标签 ========== */
+.agent-question, .form-label, label {
+  color: #2d3748 !important;
+}
+
+.text-muted, small.text-muted {
+  color: #718096 !important;
+}
