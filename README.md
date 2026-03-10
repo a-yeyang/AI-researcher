@@ -40,6 +40,110 @@
 - **执行器**：调用各 Retriever（学术 API + 网页/自定义）并行获取内容。
 - **出版器**：汇总、去重、排序后生成带引用的综述报告。
 
+
+```mermaid
+graph TD
+    %% ================= 用户交互层 =================
+    subgraph ClientLayer ["1. 用户交互层 (Client Layer)"]
+        UI["Web Frontend\n(Next.js)"]
+        Mobile["Mobile Layout\n(H5 端)"]
+        CLI["Command Line Interface\n(CLI 终端)"]
+        Bot["Discord Bot / Webhook"]
+    end
+
+    %% ================= 网关与服务层 =================
+    subgraph APILayer ["2. 服务网关层 (API & Server)"]
+        FastAPI["FastAPI / Flask Server"]
+        WS["WebSocket Server\n(实时日志流推)"]
+        MCPClient["MCP Server Integration\n(Model Context Protocol)"]
+    end
+    
+    ClientLayer --> APILayer
+
+    %% ================= 智能体引擎层 =================
+    subgraph AgentLayer ["3. 智能体引擎层 (Agent Engine)"]
+        
+        subgraph SingleAgent ["单体深度研究 (Single Agent)"]
+            direction TB
+            Planner["规划者 (Planner)\n生成研究大纲与子问题"]
+            InfoGather["搜集者 (Gatherer)\n并行检索网页与文献"]
+            Curator["整合者 (Curator)\n信息清洗与关联"]
+            Writer["撰写者 (Writer)\n生成最终研究报告"]
+            Planner --> InfoGather --> Curator --> Writer
+        end
+
+        subgraph MultiAgent ["多智能体协作 (LangGraph / AG2)"]
+            direction TB
+            Orchestrator["编排者 (Orchestrator)"]
+            Editor["主编 (Editor)"]
+            Researchers["研究员网络 (Researchers)"]
+            Reviewer["审稿人 (Reviewer)"]
+            Publisher["发布者 (Publisher)"]
+            
+            Orchestrator --> Editor
+            Editor --> Researchers
+            Researchers --> Reviewer
+            Reviewer --> Publisher
+        end
+    end
+
+    APILayer --> AgentLayer
+
+    %% ================= 技能与工具层 =================
+    subgraph SkillsLayer ["4. 技能与工具层 (Tools & Skills)"]
+        subgraph Retrievers ["检索器 (Retrievers)"]
+            WebSearch["综合引擎: Tavily, DuckDuckGo, \nBing, Google, Exa, Searx"]
+            Academic["学术专库: Arxiv, PubMed, \nSemantic Scholar, OpenAlex"]
+        end
+        
+        subgraph Scrapers ["抓取器 (Scrapers)"]
+            BS4["BeautifulSoup"]
+            Playwright["Browser/NoDriver"]
+            PDF["PyMuPDF"]
+            Firecrawl["Firecrawl"]
+        end
+        
+        subgraph PaperTools ["文献处理 (Paper Tools)"]
+            Unpaywall["Unpaywall Resolver"]
+            Dedup["文献去重与排序 (Dedup Ranker)"]
+        end
+    end
+
+    SingleAgent --> SkillsLayer
+    MultiAgent --> SkillsLayer
+
+    %% ================= 记忆与上下文层 =================
+    subgraph MemoryLayer ["5. 记忆与上下文层 (Memory & Context)"]
+        ContextMgr["Context Manager\n(上下文压缩与截断)"]
+        VectorDB["Vector Store\n(FAISS / Chroma 等向量库)"]
+        StateCache["State & Draft Cache\n(研究状态与草稿持久化)"]
+    end
+
+    SkillsLayer --> ContextMgr
+    ContextMgr --> VectorDB
+    AgentLayer --> StateCache
+
+    %% ================= 基础设施层 =================
+    subgraph FoundationLayer ["6. 模型基础设施层 (Foundation Layer)"]
+        LLM["大语言模型 (LLMs)\nOpenAI, Azure, Anthropic, Gemini, Local..."]
+        Embed["嵌入模型 (Embeddings)"]
+        Cost["计费与限流管理 (Rate Limiter / Cost)"]
+    end
+
+    AgentLayer --> LLM
+    ContextMgr --> LLM
+    VectorDB --> Embed
+    APILayer --> Cost
+
+    %% 全局样式
+    classDef layer fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef agent fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef tool fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    
+    class SingleAgent,MultiAgent agent;
+    class Retrievers,Scrapers,PaperTools tool;
+```
+
 ## 快速开始
 
 ### 环境要求
